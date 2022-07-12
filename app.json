@@ -9,8 +9,12 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "packagerOpts": {
+        "sourceExts": ["cjs"]
+      }
     },
+    
     "updates": {
       "fallbackToCacheTimeout": 0
     },

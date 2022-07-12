@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable, Image } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './Components/Login';
+import Home from './Components/Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -9,7 +11,8 @@ export default function App() {
     return (
       <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+        <Stack.Screen options={{headerShown:false}} name="Login" component={Login} />
+        <Stack.Screen options={{headerShown:false}} name="Home" component={Home} />        
       </Stack.Navigator>
     </NavigationContainer>
       // <View style={styles.container1}>
