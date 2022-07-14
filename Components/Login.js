@@ -14,23 +14,17 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const navigation = useNavigation()
+  
 
-    useEffect(()=>{
-       const unsubscribe = authentication.onAuthStateChanged(re => {
-            if (re){
-                navigation.navigate("Home")
-            }
-        })
-        return unsubscribe
-    }, []) 
+
 
     const RegisterUser = () => {
         createUserWithEmailAndPassword(authentication, email, password)
-        .then((re)=>{
-            console.log(re);
-            setIsSigned(true)
-        })
+        .then(() => navigation.replace('Home'))
+        // .then((re)=>{
+        //     console.log(re);
+        //     setIsSigned(true)
+        // })
         .catch((re)=>{
              console.log(re)
         })
@@ -38,14 +32,25 @@ const Login = () => {
 
     const SignInUser = () => {
         signInWithEmailAndPassword(authentication,email,password)
-        .then((re)=>{
-            console.log(re);
-            setIsSigned(true)
-        })
+        .then(() => navigation.replace('Home'))
+        // .then((re)=>{
+        //     console.log(re);
+        //     setIsSigned(true)
+        // })
         .catch((re)=>{
              console.log(re)
         })
     }
+
+    const navigation = useNavigation()
+    //     useEffect(()=>{
+    //    const unsubscribe = authentication.onAuthStateChanged(re => {
+    //         if (re){
+    //             navigation.replace("Home")
+    //         }
+    //     })
+    //     return unsubscribe
+    // }, []) 
     
 
 
@@ -83,7 +88,7 @@ const Login = () => {
 
             <TouchableOpacity style={styles.button1}
                 onPress={SignInUser} >
-                <Text style={{ color: 'grey', fontWeight: "bold" }} >Log in?</Text>
+                <Text style={{ color: 'grey', fontWeight: "bold" }} >Log in</Text>
             </TouchableOpacity>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 30 }}>
