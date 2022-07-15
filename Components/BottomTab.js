@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Players from './BottomNavTabs/Players'
 import Clubs from './BottomNavTabs/Clubs'
+import Favorites from './BottomNavTabs/Favorites'
 
 
 const Tab = createBottomTabNavigator();
@@ -34,6 +35,15 @@ const BottomTab = () => {
                 options={{
                     headerShown:false,
                     tabBarLabel: 'Clubs',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="soccer" color={color} size={26} />
+                    ),
+                }}
+            />
+            <Tab.Screen name='Favorites' component={Favorites}
+                options={{
+                    headerShown:false,
+                    tabBarLabel: 'Favorites',
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="star" color={color} size={26} />
                     ),
