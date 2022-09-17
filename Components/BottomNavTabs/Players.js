@@ -1,97 +1,130 @@
-import React, { Component } from 'react'
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import React, {useState,useEffect, Component } from 'react'
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, Image, NativeEventEmitter } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-class Players extends Component {
+function Clubs() { 
+  const [clubs,setClubs]=useState([]);
+  const [name, setName] = useState([]);
+  const [loading,setLoading]=useState(false);
 
-  state = {
-    clubs: []
-  }
+  useEffect(() => {
+    // Update the document title using the browser API
+   fetchData();
+  });
 
-  componentDidMount() {
+  const fetchData=()=>{
     let url = 'https://api.statorium.com/api/v1/standings/143?apikey=f41c2d8c8377a90c5d1708a22851eefb'
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
         console.log('JSON', json)
-        this.setState({ clubs: json.standings})
-        return json;
+        let EasternConference = json.season.groups[0].standings;
+        let WesternConference = json.season.groups[1].standings;
+        const combinedStandings = [...EasternConference,...WesternConference]
+        setClubs(combinedStandings)
+        
       })
       .catch((error) => {
         console.error(error);
-        this.setState({ clubs: [] })
-
+        setClubs([])
       })
   }
-  onChangeText(text) {
-    console.log('textChanged', text)
-  }
 
-  ItemView(item) {
-    console.log(item,'test')
+  const renderItemView=({item})=> {
+   
     return (
-      <View>
-        <Text>{item.item.teamName}</Text>
-      </View>
+      <TouchableOpacity style={{flexDirection: 'row', marginHorizontal:10, marginVertical:5, borderRadius:10, borderColor: '#94a274', borderWidth: 1, padding:10 }}
+      onPress={null}
+      >
+        <Image source={{uri: item.logo}} style={{width: 50,height: 50}}/>
+        <Text style={{color: '#fff', padding: 10,textAlign: 'left', fontWeight:'bold' }}>{item.teamName}</Text>
+      </TouchableOpacity>
     );
   };
-  render() {
+
+  const alphabeticalSort=()=>{
+    const newData = clubs.sort((a,b)=> {
+      if(a.teamName.toLowerCase() < b.teamName.toLowerCase()) return -1;
+      if (a.teamName.toLowerCase() > b.teamName.toLowerCase()) return 1;
+      return 0;
+    });
+    setClubs(newData);
+    setLoading(!loading);
+  }
+  
+  const searchArray = clubs.filter(item=>  {
+    if(name === '') return item;
+    if (item.teamName.includes(name)) return item;
+  })
+  
+
     return (
-      <View style={styles.container1}>
-        <SafeAreaView >
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 10, }}>
+        <SafeAreaView style={styles.container} >
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 10,backgroundColor: '#94a274', marginBottom:10 }}>
             <View>
-              <Ionicons name='md-search' size={25} color='black' style={{ marginLeft: 10 }} />
+              <Ionicons name='md-search' size={25} color='black'  />
             </View>
             <TextInput
               style={styles.input}
               placeholder="Search Player"
-              onChangeText={text => this.onChangeText(text)}
-
+              onChangeText={(text) => setName(text)}
+              value={name}
             />
           </View>
-        </SafeAreaView>
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity onPress={() => alphabeticalSort()} style={styles.btn}>
+            <Text style={styles.bold}>Sort Alphabetically</Text>
+          </TouchableOpacity>
+          </View>
+
+        
         <FlatList
-          data={this.state.clubs}
-          renderItem={item => this.ItemView(item)}
+          data={searchArray}
+          renderItem={item => renderItemView(item)}
           ListEmptyComponent={() => (
-            <Text style={{ color: 'white' }}>
+            <Text style={{ color: 'white', justifyContent: 'center', alignItems: 'center', }}>
               Nothing to show
             </Text>
           )
           }
         />
- 
-
-
-      </View>
+      </SafeAreaView>
 
     )
   }
-}
-export default Players;
+
+  export default Clubs;
+
+
+
 const styles = StyleSheet.create({
-  container1: {
+  container: {
     backgroundColor: '#00001c',
-    alignItems: 'center',
+    padding: 20,
     flex: 1,
     borderRadius: 20,
     justifyContent: 'center'
   },
   input: {
     paddingVertical: 12,
-    width: 280,
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 10
+    width: 270,
+    backgroundColor: '#94a274',
+    borderRadius: 10,
+    paddingLeft:10
   },
-  card: {
-    height: 30,
-    backgroundColor: 'gray',
-
-  }
+  listing:{
+    flexDirection: 'row',
+    marginVertical: 10, 
+    
+  },
+  btn:{
+    padding: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#94a274',
+    margin: 20,
+    borderRadius: 10,
+  },
 
 })
-
