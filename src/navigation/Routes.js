@@ -1,12 +1,29 @@
-import React, { Component } from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Players from './BottomNavTabs/Clubs'
+import React, {Component} from 'react';
+import { StyleSheet, Text, View, TextInput, Pressable, Image } from "react-native";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from '../screens/Login';
+import Favorites from '../screens/Favorites';
+import ClubPlayers from '../screens/ClubPlayers';
+import Clubs from '../screens/Clubs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import Clubs from './BottomNavTabs/Players'
-import Favorites from './BottomNavTabs/Favorites'
+import PlayerDetails from '../screens/PlayerDetails';
 
+
+
+const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
+
+function PlayerStack() {
+    return (
+      <Stack.Navigator screenOptions={{headerShown: false,headerMode: 'screen',}}>
+        <Stack.Screen name="ClubPlayers" component={ClubPlayers} />
+        <Stack.Screen name="PlayerDetails" component={PlayerDetails} />
+      </Stack.Navigator>
+    );
+  } 
 const BottomTab = () => {
     return (
         <Tab.Navigator
@@ -26,12 +43,11 @@ const BottomTab = () => {
                     headerShown:false,
                     tabBarLabel: 'Clubs',
                     tabBarIcon: ({ color }) => (
-        
                         <Ionicons name='football' size={26} color={color} />
                     ),
                 }}
             />
-            <Tab.Screen name='Players' component={Players}
+            <Tab.Screen name='Players' component={PlayerStack}
                 options={{
                     headerShown:false,
                     tabBarLabel: 'Players',
@@ -53,4 +69,16 @@ const BottomTab = () => {
     )
 }
 
-export default BottomTab;
+
+export default function Routes() {
+
+    return (
+      <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen options={{headerShown:false}} name="Login" component={Login}/>
+        <Stack.Screen options={{headerShown:false}} name="Home" component={BottomTab}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+      
+    )
+  }

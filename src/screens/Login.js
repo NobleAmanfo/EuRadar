@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {useNavigation} from '@react-navigation/core'
 import { KeyboardAvoidingView, TouchableOpacity, Text, StyleSheet, View, TextInput, Pressable, Image } from 'react-native';
-import { signup } from '../firebase';
-import {authentication} from '../firebase'
+import { signup } from '../utils/firebase';
+import {authentication} from '../utils/firebase'
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword  } from 'firebase/auth';
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 

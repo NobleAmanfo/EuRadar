@@ -1,18 +1,17 @@
-import React, {useState,useEffect, Component } from 'react'
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, Image, NativeEventEmitter } from 'react-native'
+import React, {useState,useEffect } from 'react'
+import {SafeAreaView, FlatList, Text, View, StyleSheet, TextInput, TouchableOpacity, Image,} from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { FlatList } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 function Clubs() { 
   const [clubs,setClubs]=useState([]);
-  const [name, setName] = useState([]);
+  const [name, setName] = useState('');
   const [loading,setLoading]=useState(false);
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     // Update the document title using the browser API
    fetchData();
-  });
+  },[]);
 
   const fetchData=()=>{
     let url = 'https://api.statorium.com/api/v1/standings/143?apikey=f41c2d8c8377a90c5d1708a22851eefb'
@@ -20,9 +19,9 @@ function Clubs() {
       .then((response) => response.json())
       .then((json) => {
         console.log('JSON', json)
-        let EasternConference = json.season.groups[0].standings;
-        let WesternConference = json.season.groups[1].standings;
-        const combinedStandings = [...EasternConference,...WesternConference]
+        let easternConference = json.season.groups[0].standings;
+        let westernConference = json.season.groups[1].standings;
+        const combinedStandings = [...easternConference,...westernConference]
         setClubs(combinedStandings)
         
       })
@@ -44,7 +43,9 @@ function Clubs() {
     );
   };
 
+
   const alphabeticalSort=()=>{
+    if(toggle) {
     const newData = clubs.sort((a,b)=> {
       if(a.teamName.toLowerCase() < b.teamName.toLowerCase()) return -1;
       if (a.teamName.toLowerCase() > b.teamName.toLowerCase()) return 1;
@@ -52,30 +53,40 @@ function Clubs() {
     });
     setClubs(newData);
     setLoading(!loading);
+    } else {
+      fetchData();
+    }  
   }
+  console.log(clubs)
   
   const searchArray = clubs.filter(item=>  {
     if(name === '') return item;
-    if (item.teamName.includes(name)) return item;
+    if (item.teamName.toLowerCase().includes(name.toLowerCase())) return item;
   })
+  
   
 
     return (
         <SafeAreaView style={styles.container} >
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 10,backgroundColor: '#94a274', marginBottom:10 }}>
+          <View style = {{alignItems: 'center',}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 10,backgroundColor: '#94a274', width: '80%'  }}>
             <View>
               <Ionicons name='md-search' size={25} color='black'  />
             </View>
             <TextInput
               style={styles.input}
               placeholder="Search Player"
+              placeholderTextColor='white'
               onChangeText={(text) => setName(text)}
               value={name}
             />
           </View>
+          </View>
           <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableOpacity onPress={() => alphabeticalSort()} style={styles.btn}>
-            <Text style={styles.bold}>Sort Alphabetically</Text>
+          <TouchableOpacity onPress={() =>{
+            setToggle(!toggle);alphabeticalSort()
+          }} style={styles.btn}>
+            <Text style={styles.bold}>{toggle ? 'Back to Previous Listing': 'Sort Alphabetically' }</Text>
           </TouchableOpacity>
           </View>
 
@@ -105,7 +116,8 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
     borderRadius: 20,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    
   },
   input: {
     paddingVertical: 12,
