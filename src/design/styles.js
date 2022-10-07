@@ -31,9 +31,10 @@ export const styles = StyleSheet.create({
     color: colorCode.purple,
   },
   sm:{
-    fontSize: 14,
-  
-    color: colorCode.purple,
+    fontSize: 12,
+    flexWrap: 'wrap',
+    color: colorCode.white,
+    flex: 1,
   },
   xs:{
     fontSize: 12,

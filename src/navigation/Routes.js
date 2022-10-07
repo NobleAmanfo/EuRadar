@@ -6,6 +6,7 @@ import Login from '../screens/Login';
 import Favorites from '../screens/Favorites';
 import ClubPlayers from '../screens/ClubPlayers';
 import Clubs from '../screens/Clubs';
+import ClubDetails from '../screens/ClubDetails';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import PlayerDetails from '../screens/PlayerDetails';
@@ -24,6 +25,15 @@ function PlayerStack() {
       </Stack.Navigator>
     );
   } 
+
+  function ClubStack(){
+    return(
+        <Stack.Navigator screenOptions={{headerShown: false,headerMode: 'screen',}}>
+        <Stack.Screen name="Clubs" component={Clubs} />
+        <Stack.Screen name="ClubDetails" component={ClubDetails} />
+      </Stack.Navigator>
+    )
+  }
 const BottomTab = () => {
     return (
         <Tab.Navigator
@@ -38,7 +48,7 @@ const BottomTab = () => {
             }}
 
         >
-            <Tab.Screen name='Clubs' component={Clubs}
+            <Tab.Screen name='Clubs' component={ClubStack}
                 options={{
                     headerShown:false,
                     tabBarLabel: 'Clubs',

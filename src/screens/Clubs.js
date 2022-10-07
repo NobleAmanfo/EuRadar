@@ -1,8 +1,9 @@
 import React, {useState,useEffect } from 'react'
 import {SafeAreaView, FlatList, Text, View, StyleSheet, TextInput, TouchableOpacity, Image,} from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { clubsUrl } from '../utils/constants';
 
-function Clubs() { 
+function Clubs({navigation}) { 
   const [clubs,setClubs]=useState([]);
   const [name, setName] = useState('');
   const [loading,setLoading]=useState(false);
@@ -14,7 +15,7 @@ function Clubs() {
   },[]);
 
   const fetchData=()=>{
-    let url = 'https://api.statorium.com/api/v1/standings/143?apikey=f41c2d8c8377a90c5d1708a22851eefb'
+    let url = clubsUrl
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
@@ -23,7 +24,6 @@ function Clubs() {
         let westernConference = json.season.groups[1].standings;
         const combinedStandings = [...easternConference,...westernConference]
         setClubs(combinedStandings)
-        
       })
       .catch((error) => {
         console.error(error);
@@ -32,10 +32,9 @@ function Clubs() {
   }
 
   const renderItemView=({item})=> {
-   
     return (
       <TouchableOpacity style={{flexDirection: 'row', marginHorizontal:10, marginVertical:5, borderRadius:10, borderColor: '#94a274', borderWidth: 1, padding:10 }}
-      onPress={null}
+      onPress={()=> navigation.navigate('ClubDetails',{details: item})}
       >
         <Image source={{uri: item.logo}} style={{width: 50,height: 50}}/>
         <Text style={{color: '#fff', padding: 10,textAlign: 'left', fontWeight:'bold' }}>{item.teamName}</Text>

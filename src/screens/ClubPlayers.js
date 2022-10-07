@@ -2,6 +2,7 @@ import React, {useState,useEffect, Component } from 'react'
 import {FlatList, SafeAreaView, Text, View, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { map } from '@firebase/util';
+import { clubPLayesUrl } from '../utils/constants';
 
 
 
@@ -17,7 +18,7 @@ function ClubPlayers({navigation}) {
   }, []);
 
   const fetchData=()=>{
-    let url = 'https://api.statorium.com/api/v1/topplayers/143/?apikey=f41c2d8c8377a90c5d1708a22851eefb&event_id=1&limit=2000'
+    let url = clubPLayesUrl
     fetch(url)
     .then(response=>response.json())
     .then(responseJson=> {
