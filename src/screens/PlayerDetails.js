@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, SafeAreaView } from 'react-native';
+import {View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import WebView from 'react-native-webview';
 import { styles } from '../design/styles';
 
 
 function PlayerDetails({navigation,route}) {
     const [data, setData] = useState([]);
-    const [video, setVideo] = useState([]);
+    const [newsData, setNewsData] = useState([])
 
 
     useEffect(() => {
@@ -29,49 +29,76 @@ function PlayerDetails({navigation,route}) {
           })
       }
      
-  // 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&order=relevance&q=compilations&type=video&key=[YOUR_API_KEY]' \
-  // --header 'Authorization: Bearer [YOUR_ACCESS_TOKEN]' \
-  // --header 'Accept: application/json' \
-
       const fetchData1 = () => {
-        fetch(`https://youtube.googleapis.com/youtube/v3/search/${details.fullname}/?part=snippet&maxResults=5&order=relevance&q=compilations&type=video&key=AIzaSyDzwst2pUCUCfDKl9I7YLpVoLNAjjkWk6c`,{ 
-          method: 'GET', 
-          headers: new Headers({
-              'Authorization': 'Bearer AIzaSyDzwst2pUCUCfDKl9I7YLpVoLNAjjkWk6c', 
-              'Content-Type': 'application/json'
-          }),
-      })
-      .then((response) => console.log(response.json))
-      
-      .catch((error) => {
-        console.error(error);
-    }); }
+        let url = `https://newsapi.org/v2/everything?q="${details.fullname}"&pageSize=10&sortBy=relevancy&apiKey=b7ebb650437d4d95bcbf85be5d6b0113`
+        fetch(url)
+          .then(response => response.json())
+          .then(responseJson => {
+            setNewsData(responseJson.articles);
+            console.log(responseJson.articles)
+          }
+          )
+          .catch((error) => {
+            console.error(error);
+            // setClubs([])
+          })
+      }
         
     const {details} = route.params; 
     console.log (details)
     return (
         <SafeAreaView style={[styles.container1]}>
-            <View style={{borderWidth: 2, borderColor: '#94a274', paddingVertical:10, borderRadius:10, marginTop:5}}>
-                <Image source={{uri: details.photo ? details.photo : 'https://cdn-icons-png.flaticon.com/512/77/77305.png'}} style={{width: 250,height: 250}}/>
+          <View style = {{flexDirection:'row', alignItems: 'center', paddingHorizontal: 20}}>
+            <View style = {{width:'30%', alignItems: 'center'}}>
+                <Image source={{uri: details.photo ? details.photo : 'https://cdn-icons-png.flaticon.com/512/77/77305.png'}} style={{ width: 100, height: 100, resizeMode: 'contain' }}/>
             </View>
-            <View style={{borderWidth: 2, borderColor: '#94a274', paddingVertical:10, paddingHorizontal:50, borderRadius:10, marginTop:10}}>
+            <View  style = {{width:'70%'}}>
               {data.player ? <>
-            <Text style={[styles.lg, styles.textCenter]}>Name: {data.player.fullName}</Text>
-                <Text style={[styles.lg, styles.textCenter]}>D.O.B: {data.player.additionalInfo.birthdate} </Text>
-                <Text style={[styles.lg, styles.textCenter]}>position: {data.player.additionalInfo.position === "1" ? 'Goalkeeper' : data.additionalInfo && data.additionalInfo.position === "2" ? 'Defender' :data.additionalInfo && data.additionalInfo.position === "3" ? 'Midfielder' : 'Attacker' }</Text>
-                <Text style={[styles.lg, styles.textCenter]}>Club: {data.player.teams[0].teamName } </Text>
-                <Text style={[styles.lg, styles.textCenter]}>Squad Number: {data.player.teams[0].playerNumber} </Text>
-                <Text style={[styles.lg, styles.textCenter]}>Nationality: {data.player.country.name}</Text>
+            <Text style={[styles.lg, styles.textCenter]}>Name: {data.player && data.player.fullName}</Text>
+                <Text style={[styles.lg, styles.textCenter]}>D.O.B: {data.player && data.player.additionalInfo.birthdate} </Text>
+                <Text style={[styles.lg, styles.textCenter]}>position: {data.player && data.player.additionalInfo.position === "1" ? 'Goalkeeper' : data.additionalInfo && data.additionalInfo.position === "2" ? 'Defender' :data.additionalInfo && data.additionalInfo.position === "3" ? 'Midfielder' : 'Attacker' }</Text>
+                <Text style={[styles.lg, styles.textCenter]}>Club: {data.player && data.player.teams[0].teamName } </Text>
+                <Text style={[styles.lg, styles.textCenter]}>Squad Number: {data.player && data.player.teams[0].playerNumber} </Text>
+                <Text style={[styles.lg, styles.textCenter]}>Nationality: {data.player && data.player.country.name}</Text>
               </>
               : null }
             </View>
-            <View>
-                <WebView source = {{uri: video.url}}>
-                    
-                </WebView>
             </View>
+            <ScrollView style ={{width:'100%', marginBottom:55, marginTop:30}}>
+          <View style={{ alignItems: 'center', borderWidth: 2, borderColor: '#94a274', paddingVertical: 10, borderRadius: 10, marginTop: 5, paddingHorizontal: 10, width: '100%' }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>NEWS</Text>
+            {
+              newsData && newsData.map(item => {
+                return (
+                  <TouchableOpacity key={item.publishedAt} style={{ alignItems: 'center', marginTop: 10, flexDirection: 'row', marginHorizontal: 10, marginVertical: 5, borderRadius: 10, borderColor: '#94a274', borderWidth: 1, padding: 10, width: '100%' }} onPress={() => Linking.openURL(item.url)} >
+                    <Image source={{ uri: item.urlToImage ? item.urlToImage : 'https://cdn-icons-png.flaticon.com/512/77/77305.png' }} style={{ width: 50, height: 50, marginRight: 10, }} />
+                    <Text style={[styles.sm, styles.textCenter,]}>{item.title}</Text>
+                  </TouchableOpacity>
+                )
+
+              })
+            }
+          </View>
+        </ScrollView>
+            
             </SafeAreaView>
     )
 }
 
 export default PlayerDetails;
+
+
+const styless = StyleSheet.create({
+  container: {
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  
+  card: {
+    paddingVertical: 50,
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

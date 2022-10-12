@@ -32,9 +32,10 @@ function Clubs({navigation}) {
   }
 
   const renderItemView=({item})=> {
+    console.log(item.options, 'codet testing')
     return (
       <TouchableOpacity style={{flexDirection: 'row', marginHorizontal:10, marginVertical:5, borderRadius:10, borderColor: '#94a274', borderWidth: 1, padding:10 }}
-      onPress={()=> navigation.navigate('ClubDetails',{details: item})}
+      onPress={()=> navigation.navigate('ClubDetails',{details: item, standings:item.options})}
       >
         <Image source={{uri: item.logo}} style={{width: 50,height: 50}}/>
         <Text style={{color: '#fff', padding: 10,textAlign: 'left', fontWeight:'bold' }}>{item.teamName}</Text>
