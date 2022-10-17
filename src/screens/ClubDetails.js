@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList, Linking } from 'react-native';
 import { BottomSheet } from "react-native-btr";
-
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { styles } from '../design/styles';
 
 function ClubDetails({ navigation, route }) {
   const [data, setData] = useState([])
   const [newsData, setNewsData] = useState([])
   const [visible, setVisible] = useState(false);
+
 
   function toggle() {
     setVisible((visible) => !visible);
@@ -19,18 +20,6 @@ function ClubDetails({ navigation, route }) {
     fetchData();
     fetchData1();
   }, []);
-
-  // const renderContent = () => (
-  //   <View
-  //     style={{
-  //       backgroundColor: 'white',
-  //       padding: 16,
-  //       height: 450,
-  //     }}
-  //   >
-  //     <Text>Swipe down to close</Text>
-  //   </View>
-  // );
 
   const fetchData = () => {
     let url = `https://api.statorium.com/api/v1/teams/${details.teamID}/?season_id=143&apikey=f41c2d8c8377a90c5d1708a22851eefb`
@@ -59,6 +48,8 @@ function ClubDetails({ navigation, route }) {
         // setClubs([])
       })
   }
+
+   
   const renderItemView = ({ item }) => {
     return (
       <View style={{flexDirection:'row', marginVertical:10,alignItems: 'center', alignSelf:'center',borderWidth:2, borderColor: 'white', padding:10, borderRadius:10, width:'95%'}}>
@@ -105,8 +96,6 @@ function ClubDetails({ navigation, route }) {
         <Text style = {styles.lg}>D: {JSON.parse(standings).winhome_chk} </Text>
         <Text style = {styles.lg}>L: {JSON.parse(standings).lost_chk} </Text>
         <Text style = {styles.lg}>GD: {JSON.parse(standings).gd_chk} </Text>
-
-        
 
       </View>
       <TouchableOpacity style={[styles.button1, {marginBottom:20}]} onPress={toggle}>

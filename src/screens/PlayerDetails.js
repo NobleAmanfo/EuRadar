@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import WebView from 'react-native-webview';
 import { styles } from '../design/styles';
 
 
