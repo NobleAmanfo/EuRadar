@@ -5,7 +5,8 @@ import { styles } from '../design/styles';
 
 function PlayerDetails({navigation,route}) {
     const [data, setData] = useState([]);
-    const [newsData, setNewsData] = useState([])
+    const [newsData, setNewsData] = useState([]);
+    const [aData, SetaData] = useState([]);
 
 
     useEffect(() => {
@@ -27,7 +28,7 @@ function PlayerDetails({navigation,route}) {
             setPlayers([])
           })
       }
-     
+      
       const fetchData1 = () => {
         let url = `https://newsapi.org/v2/everything?q="${details.fullname}"&pageSize=10&sortBy=relevancy&apiKey=b7ebb650437d4d95bcbf85be5d6b0113`
         fetch(url)
@@ -40,6 +41,20 @@ function PlayerDetails({navigation,route}) {
           .catch((error) => {
             console.error(error);
             // setClubs([])
+          })
+      }
+
+      const fetchData2=()=>{
+        let url = `https://api.statorium.com/api/v1/topplayers/143/${details.id}/?apikey=f41c2d8c8377a90c5d1708a22851eefb&event_id=2&limit=2000`
+        fetch(url)
+        .then(response=>response.json())
+        .then(responseJson=> {
+            SetaData(responseJson)
+        }
+        )
+          .catch((error) => {
+            console.error(error);
+            setPlayers([])
           })
       }
         

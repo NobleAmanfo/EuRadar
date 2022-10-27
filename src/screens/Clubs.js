@@ -5,11 +5,11 @@ import { clubsUrl } from '../utils/constants';
 import * as wpActions from '../store/actions';
 import { useSelector, useDispatch } from 'react-redux';
 
+
 function Clubs({ navigation }) {
   const dispatch = useDispatch();
-  const clubs = useSelector((state) => state.appData.clubData);
-  console.log(clubs);
-  const [name, setName] = useState('');
+  const clubData = useSelector((state) => state.appData.clubData);
+  const [pName, setpName] = useState('');
   const [loading, setLoading] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [favoriteList, setFavoriteList] = useState([]);
@@ -37,29 +37,8 @@ function Clubs({ navigation }) {
       })
   }
 
-  // function to add an item to favorite list
-  const onFavorite = club => {
-    setFavoriteList([...favoriteList, club]);
-  };
-
-  // function to remove an item from favorite list
-  const onRemoveFavorite = club => {
-    const filteredList = favoriteList.filter(
-      item => item.id !== club.id
-    );
-    setFavoriteList(filteredList);
-  };
-
-  // function to check if an item exists in the favorite list or not
-  const ifExists = club => {
-    if (favoriteList.filter(item => item.id === club.id).length > 0) {
-      return true;
-    }
-    return false;
-  };
-
-  const sendToken=(code)=>{ 
-    dispatch(wpActions.saveToken(code))
+  const markFavorite=(code)=>{
+    dispatch(wpActions.updateClubData(code));
   }
 
   const renderItemView = ({ item }) => {
@@ -78,34 +57,20 @@ function Clubs({ navigation }) {
           </View>
         </TouchableOpacity>
         <View style={{ width: '10%', justifyContent: 'center' }}>
-          <TouchableOpacity onPress={() => sendToken(item.teamName)}
+          <TouchableOpacity onPress={() => markFavorite(item.teamID)}
             style={{ justifyContent: 'center', alignItems: 'center', }}>
-            <Ionicons name={ifExists(item) ? 'star' : 'star-outline'} size={26} color={'white'} />
+            <Ionicons name={item.show ? 'star' : 'star-outline'} size={26} color={'white'} />
           </TouchableOpacity>
         </View>
       </View>
     );
   };
 
+ const searchArray = clubData && clubData.filter(item => {
+    if (pName === '') return item;
+    if (item.teamName.toLowerCase().includes(pName.toLowerCase())) return item;
+  });
 
-  const alphabeticalSort = () => {
-    if (toggle) {
-      const newData = clubs.sort((a, b) => {
-        if (a.teamName.toLowerCase() < b.teamName.toLowerCase()) return -1;
-        if (a.teamName.toLowerCase() > b.teamName.toLowerCase()) return 1;
-        return 0;
-      });
-      setClubs(newData);
-      setLoading(!loading);
-    } else {
-      fetchData();
-    }
-  }
-
-  const searchArray = clubs.filter(item => {
-    if (name === '') return item;
-    if (item.teamName.toLowerCase().includes(name.toLowerCase())) return item;
-  })
 
 
 
@@ -120,14 +85,14 @@ function Clubs({ navigation }) {
             style={styles.input}
             placeholder="Search Player"
             placeholderTextColor='white'
-            onChangeText={(text) => setName(text)}
-            value={name}
+            onChangeText={(text) => setpName(text)}
+            value={pName}
           />
         </View>
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <TouchableOpacity onPress={() => {
-          setToggle(!toggle); alphabeticalSort()
+          setToggle(!toggle); dispatch(wpActions.filterClubData())
         }} style={styles.btn}>
           <Text style={styles.bold}>{toggle ? 'Back to Previous Listing' : 'Sort Alphabetically'}</Text>
         </TouchableOpacity>
