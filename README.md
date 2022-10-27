@@ -1,4 +1,4 @@
-# EuRadar![IMG_9077](https://user-images.githubusercontent.com/67824486/198364743-2bbd65a8-98d4-4df5-a037-deca2ab5cb25.PNG)
+# EuRadar![IMG_9077](https://user-images.githubusercontent.com/67824486/198364743-2bbd65a8-98d4-4df5-a037-deca2ab5cb25.PNG =250x250)
 ![IMG_9076](https://user-images.githubusercontent.com/67824486/198364749-2823f612-f034-4bf3-bdac-c2e9d2075377.PNG)
 ![IMG_9075](https://user-images.githubusercontent.com/67824486/198364753-285f85f1-fb3e-4b13-8018-6844d0b738a5.PNG)
 ![IMG_9074](https://user-images.githubusercontent.com/67824486/198364755-b3fd515e-b159-4133-82d9-b4fc20560133.PNG)
