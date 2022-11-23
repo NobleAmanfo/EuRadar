@@ -5,7 +5,6 @@ import { map } from '@firebase/util';
 import { clubPLayesUrl } from '../utils/constants';
 
 
-
 function ClubPlayers({navigation}) {
   const [players,setPlayers]=useState([]);
   const [name, setName] = useState('');
