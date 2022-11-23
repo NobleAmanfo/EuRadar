@@ -100,7 +100,7 @@ const Login = () => {
                 <View style={{ flex: 1, height: 1, backgroundColor: 'grey', marginRight: 15, }} />
             </View>
 
-            <View style={{ marginTop: 30 }}>
+            {/* <View style={{ marginTop: 30 }}>
                 <Pressable style={styles.button3}
                     onPress={() => this.props.navigation.navigate('Home')
                     } >
@@ -143,7 +143,7 @@ const Login = () => {
                     // borderColor: 'black',
                     borderWidth: 1,
                 }}
-                    onPress={() => this.props.navigation.navigate('NewRecents')
+                    onPress={() => null
                     } >
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }} >
                         <Image
@@ -154,7 +154,7 @@ const Login = () => {
                         <Text style={{ color: 'black', fontWeight: "bold", fontSize: 15 }} >Continue with Apple</Text>
                     </View>
                 </Pressable>
-            </View>
+            </View> */}
         </KeyboardAvoidingView>
     )
 }

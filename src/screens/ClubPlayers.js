@@ -8,7 +8,7 @@ import { clubPLayesUrl } from '../utils/constants';
 
 function ClubPlayers({navigation}) {
   const [players,setPlayers]=useState([]);
-  const [name, setName] = useState([]);
+  const [name, setName] = useState('');
   const [loading,setLoading]=useState(false);
   const [toggle, setToggle] = useState(false);
 
@@ -64,9 +64,9 @@ function ClubPlayers({navigation}) {
   //   }
   // }
 
-  const searchArray = players.filter(item=>  {
+  const searchArray = players && players.filter(item=>  {
     if(name === '') return item;
-    if (item.fullname.toLowerCase().includes(name)) return item;
+    if (item.fullname.toLowerCase().includes(name.toLowerCase())) return item;
   })
 
     return (
