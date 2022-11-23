@@ -83,7 +83,6 @@ function ClubPlayers({navigation}) {
               placeholderTextColor='white'
               onChangeText={(text) => setName(text)}
               value={name}
-            
             />
           </View>
           </View>
@@ -113,8 +112,6 @@ function ClubPlayers({navigation}) {
   }
 
   export default ClubPlayers;
-
-
 
 const styles = StyleSheet.create({
   container: {
