@@ -26,6 +26,15 @@ export const styles = StyleSheet.create({
     
     color: colorCode.white,
   },
+  lg1:{
+    fontSize: 20,
+    color: colorCode.black,
+  },
+  lg2:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colorCode.black,
+  },
   md:{
     fontSize: 16,
     color: colorCode.purple,

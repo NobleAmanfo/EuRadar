@@ -35,7 +35,6 @@ function ClubPlayers({navigation}) {
   
 
   const renderItemView=({item})=> {
-   const photoURL = item.photo.length != 0 ? item.photo : 'https://cdn-icons-png.flaticon.com/512/77/77305.png';
     return (
       <TouchableOpacity style={{flexDirection: 'row', marginHorizontal:10, marginVertical:5, borderRadius:10, borderColor: '#94a274', borderWidth: 1, padding:10 }}
       onPress={()=> navigation.navigate('PlayerDetails',{details: item})} 

@@ -6,13 +6,14 @@ import { styles } from '../design/styles';
 function PlayerDetails({navigation,route}) {
     const [data, setData] = useState([]);
     const [newsData, setNewsData] = useState([]);
-    const [aData, SetaData] = useState([]);
+    const [countryData, setCountryData] = useState([]);
 
 
     useEffect(() => {
         // Update the document title using the browser API
        fetchData();
        fetchData1();
+      //  fetchData2();
       }, []);
     
       const fetchData=()=>{
@@ -44,36 +45,40 @@ function PlayerDetails({navigation,route}) {
           })
       }
 
-      const fetchData2=()=>{
-        let url = `https://api.statorium.com/api/v1/topplayers/143/${details.id}/?apikey=f41c2d8c8377a90c5d1708a22851eefb&event_id=2&limit=2000`
-        fetch(url)
-        .then(response=>response.json())
-        .then(responseJson=> {
-            SetaData(responseJson)
-        }
-        )
-          .catch((error) => {
-            console.error(error);
-            setPlayers([])
-          })
-      }
+      // const fetchData2=()=>{
+      //   let url = `https://countryflagsapi.com/png/${data.country}`
+      //   fetch(url)
+      //   .then(response=>response.json())
+      //   .then(responseJson=> {
+      //     setCountryData(responseJson)
+      //     console.log(countryData)
+      //   }
+      //   )
+      //     .catch((error) => {
+      //       console.error(error);
+            
+      //     })
+      // }
         
     const {details} = route.params; 
     console.log (details)
     return (
         <SafeAreaView style={[styles.container1]}>
-          <View style = {{flexDirection:'row', alignItems: 'center', paddingHorizontal: 20}}>
-            <View style = {{width:'30%', alignItems: 'center'}}>
-                <Image source={{uri: details.photo ? details.photo : 'https://cdn-icons-png.flaticon.com/512/77/77305.png'}} style={{ width: 100, height: 100, resizeMode: 'contain' }}/>
+          
+
+          {/* //card 2 */}
+            <View style = {{flexDirection:'row', alignItems: 'center', padding: 20, backgroundColor: 'white', width: '90%', borderRadius: 10}}>
+            <View style = {{width:'30%', alignItems: 'center', backgroundColor: '#00001c', paddingTop: 10, borderRadius: 10}}>
+                <Image source={{uri: details.photo ? details.photo : 'https://cdn-icons-png.flaticon.com/512/77/77305.png'}} style={{ width: 120, height: 120, resizeMode: 'contain' }}/>
             </View>
-            <View  style = {{width:'70%'}}>
+            <View  style = {{width:'70%', paddingLeft: 10}}>
               {data.player ? <>
-            <Text style={[styles.lg, styles.textCenter]}>Name: {data.player && data.player.fullName}</Text>
-                <Text style={[styles.lg, styles.textCenter]}>D.O.B: {data.player && data.player.additionalInfo.birthdate} </Text>
-                <Text style={[styles.lg, styles.textCenter]}>position: {data.player && data.player.additionalInfo.position === "1" ? 'Goalkeeper' : data.additionalInfo && data.additionalInfo.position === "2" ? 'Defender' :data.additionalInfo && data.additionalInfo.position === "3" ? 'Midfielder' : 'Attacker' }</Text>
-                <Text style={[styles.lg, styles.textCenter]}>Club: {data.player && data.player.teams[0].teamName } </Text>
-                <Text style={[styles.lg, styles.textCenter]}>Squad Number: {data.player && data.player.teams[0].playerNumber} </Text>
-                <Text style={[styles.lg, styles.textCenter]}>Nationality: {data.player && data.player.country.name}</Text>
+                <Text style={[styles.lg1]}>{data.player && data.player.teams[0].playerNumber} </Text>
+                <Text style={[styles.lg2]}>{data.player && data.player.fullName}</Text>
+                <Text style={[styles.lg1]}>{data.player && data.player.teams[0].teamName } </Text>
+                <Text style={[styles.lg1]}>{data.player && data.player.additionalInfo.position === "1" ? 'Goalkeeper' : data.additionalInfo && data.additionalInfo.position === "2" ? 'Defender' :data.additionalInfo && data.additionalInfo.position === "3" ? 'Midfielder' : 'Forward' }</Text>
+                <Text style={[styles.lg1]}>Nationality: {data.player && data.player.country.name}</Text>
+                {/* <Image source = {{uri: `https://countryflagsapi.com/png/${data.country}`}}/> */}
               </>
               : null }
             </View>
