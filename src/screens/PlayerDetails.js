@@ -16,7 +16,7 @@ function PlayerDetails({navigation,route}) {
       //  fetchData2();
       }, []);
     
-      const fetchData=()=>{
+      const fetchData =()=>{
         let url = `https://api.statorium.com/api/v1/players/${details.id}/?season_id=143&apikey=f41c2d8c8377a90c5d1708a22851eefb`
         fetch(url)
         .then(response=>response.json())
